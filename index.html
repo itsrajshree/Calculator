@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Calculator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.js"
+    integrity="sha512-BbVEDjbqdN3Eow8+empLMrJlxXRj5nEitiCAK5A1pUr66+jLVejo3PmjIaucRnjlB0P9R3rBUs3g5jXc8ti+fQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.6.4/math.min.js"
+    integrity="sha512-iphNRh6dPbeuPGIrQbCdbBF/qcqadKWLa35YPVfMZMHBSI6PLJh1om2xCTWhpVpmUyb4IvVS9iYnnYMkleVXLA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- For styling -->
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+    }
+
+    .calculator {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .display {
+      font-size: 2em;
+      margin-bottom: 10px;
+      padding: 20px;
+      background-color: #eee;
+      border-radius: 5px;
+      text-align: right;
+      border: 2px solid black;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      font-size: 1.5em;
+      padding: 20px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ddd;
+    }
+
+    .btn-clear {
+      grid-column: span 4;
+      background-color: #ff4d4d;
+      color: white;
+    }
+
+    .btn-clear:hover {
+      background-color: #ff1a1a;
+    }
+
+    .btn-operator {
+      background-color: #4da6ff;
+      color: white;
+    }
+
+    .btn-operator:hover {
+      background-color: #1a8cff;
+    }
+
+    .btn-zero {
+      grid-column: span 2;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="calculator">
+    <div class="display" id="result">0</div>
+    <div class="buttons">
+      <button class="btn btn-clear" onclick="clr()">C</button>
+      <button class="btn" onclick="dis('7')">7</button>
+      <button class="btn" onclick="dis('8')">8</button>
+      <button class="btn" onclick="dis('9')">9</button>
+      <button class="btn btn-operator" onclick="dis('/')">/</button>
+      <button class="btn" onclick="dis('4')">4</button>
+      <button class="btn" onclick="dis('5')">5</button>
+      <button class="btn" onclick="dis('6')">6</button>
+      <button class="btn btn-operator" onclick="dis('*')">*</button>
+      <button class="btn" onclick="dis('1')">1</button>
+      <button class="btn" onclick="dis('2')">2</button>
+      <button class="btn" onclick="dis('3')">3</button>
+      <button class="btn btn-operator" onclick="dis('-')">-</button>
+      <button class="btn btn-zero" onclick="dis('0')">0</button>
+      <button class="btn" onclick="dis('.')">.</button>
+      <button class="btn" onclick="solve()">=</button>
+      <button class="btn btn-operator" onclick="dis('+')">+</button>
+    </div>
+  </div>
+  <script>
+    // Function that displays the value
+    function dis(val) {
+      const result = document.getElementById("result");
+      if (result.innerText === '0') {
+        result.innerText = val;
+      } else {
+        result.innerText += val;
+      }
+    }
+
+    // Function to clear the display
+    function clr() {
+      document.getElementById("result").innerText = '0';
+    }
+
+    // Function that evaluates the expression and returns the result
+    function solve() {
+      const result = document.getElementById("result");
+      try {
+        result.innerText = math.evaluate(result.innerText);
+      } catch (e) {
+        result.innerText = 'Error';
+      }
+    }
+
+    document.addEventListener("keydown", function (event) {
+      const key = event.key;
+      if (key >= '0' && key <= '9' || key === '.' || key === '+' || key === '-' || key === '*' || key === '/') {
+        dis(key);
+      } else if (key === 'Enter') {
+        solve();
+      } else if (key === 'Backspace') {
+        const result = document.getElementById("result");
+        result.innerText = result.innerText.slice(0, -1) || '0';
+      } else if (key === 'Escape') {
+        clr();
+      }
+    });
+  </script>
+</body>
+
+</html>
